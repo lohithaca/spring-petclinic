@@ -6,13 +6,10 @@ pipeline{
     stages{
         stage("Build"){
             steps{
-                echo "========executing A========"
+                echo "Building"
                 sh 'mvn clean install'
             }
             post{
-                always{
-                    echo "========always========"
-                }
                 success{
                     echo "========A executed successfully========"
                 }
@@ -26,11 +23,20 @@ pipeline{
                 sh "mvn test"
             }
         }
+        stage("Code Coverage"){
+            steps{
+                echo "Generate Code Coverage Report"
+                sh 'mvn jacoco:report'
+            }
+        }
+        stage("Package and Archive"){
+            steps{
+                echo 'Archiving artifacts...'
+                sh 'mvn package -DskipTests'
+            }
+        }
     }
     post{
-        always{
-            echo "========always========"
-        }
         success{
             echo "========pipeline executed successfully ========"
         }
