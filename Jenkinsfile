@@ -4,7 +4,7 @@ pipeline{
         maven 'Maven3.9.9'
     }
     stages{
-        stage("A"){
+        stage("Build"){
             steps{
                 echo "========executing A========"
                 sh 'mvn clean install'
@@ -19,6 +19,11 @@ pipeline{
                 failure{
                     echo "========A execution failed========"
                 }
+            }
+        }
+        stage("Test"){
+            steps{
+                sh "mvn test"
             }
         }
     }
