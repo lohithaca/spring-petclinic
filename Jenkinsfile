@@ -2,6 +2,10 @@ pipeline{
     agent any
     tools{
         maven 'Maven3.9.9'
+        sonarQubeScanner 'SonarQube Scanner'
+    }
+    environment {
+        SONARQUBE_URL = 'http://localhost:7900/'
     }
     stages{
         stage("Build"){
@@ -21,6 +25,14 @@ pipeline{
         stage("Test"){
             steps{
                 sh "mvn test"
+            }
+        }
+        stage('SonarQube Analysis') {
+            steps {
+                withSonarQubeEnv('SonarQube') {
+                    echo "Sonar Scan Running"
+                    sh 'sonar-scanner -Dsonar.projectKey=my_project -Dsonar.sources=src'
+                }
             }
         }
         stage("Code Coverage"){
