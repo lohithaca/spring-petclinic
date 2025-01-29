@@ -2,7 +2,6 @@ pipeline{
     agent any
     tools{
         maven 'Maven3.9.9'
-        sonarQubeScanner 'SonarQube Scanner'
     }
     environment {
         SONARQUBE_URL = 'http://localhost:7900/'
